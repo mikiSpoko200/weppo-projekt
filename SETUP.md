@@ -60,7 +60,7 @@ Oraz skonfigurować skrypt uruchamiający nasz program
 
 ```json
 "scripts": {
-  "start": "node ."
+  "start": "node .",
   "test": "echo \"Error: no test specified\" && exit 1"
 },
 ```
