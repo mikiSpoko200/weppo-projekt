@@ -1,5 +1,6 @@
 {
   "name": "weppo-projekt",
+  "type": "module",
   "version": "1.0.0",
   "description": "Witryna sklepu internetowego wykonana w języku TypeScript oraz środowisku Node.js",
   "main": "index.js",
