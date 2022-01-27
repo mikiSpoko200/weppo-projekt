@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { Request, Response, NextFunction } from 'express';
+import {Request, Response, NextFunction} from 'express';
 
 const app = express.default();
 
@@ -13,7 +13,7 @@ const enum AppConfig {
 app.set(AppConfig.ViewEngine, 'ejs');
 app.set(AppConfig.ViewDirectory, './views');
 
-app.use( express.static( "./static" ) );
+app.use(express.static("./static"));
 
 /*
 * TODO:
@@ -39,13 +39,13 @@ app.use("/", (req: Request, res: Response, next: NextFunction) => {
 // region routing: /search/
 app.get("/search/", (req: Request, res: Response, next: NextFunction) => {
     console.log("get search");
-    res.render("search", { product_type: 'foobar' })
+    res.render("search", {product_type: 'foobar'})
 });
 
 app.post("/search/", (req: Request, res: Response, next: NextFunction) => {
     let product_type = req.query.product_type;
     console.log("post search");
-    res.render("search", { product_type: product_type + ' siema' })
+    res.render("search", {product_type: product_type + ' jooł'})
 });
 // endregion
 
@@ -73,19 +73,19 @@ app.use("/register/", (req: Request, res: Response, next: NextFunction) => {
 
 // region routing: /product/
 app.use("/product/", (req: Request, res: Response, next: NextFunction) => {
-    res.render("product", { product_id: 1234321 });
+    res.render("product", {product_id: 1234321});
 });
 // endregion
 
 
 // region routing: 404
 app.use((req: Request, res: Response) => {
-    res.render('404.ejs', { url : req.url });
+    res.render('404.ejs', {url: req.url});
 });
 // endregion
 
 
 // start the Express server
 app.listen(AppConfig.Port, () => {
-    console.log(`server started at http://localhost:${ AppConfig.Port }`);
+    console.log(`server started at http://localhost:${AppConfig.Port}`);
 });
