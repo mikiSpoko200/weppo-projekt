@@ -1,24 +1,27 @@
 {
-  "name": "fff",
+  "name": "weppo-projekt",
   "version": "1.0.0",
+  "description": "Witryna sklepu internetowego wykonana w języku TypeScript oraz środowisku Node.js",
   "main": "index.js",
-  "type": "commonjs",
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "ejs": "^3.1.6",
+    "express": "^4.17.2"
+  },
+  "devDependencies": {},
   "scripts": {
     "start": "node .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mikiSpoko200/weppo-projekt.git"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "cookie-parser": "^1.4.6",
-    "express": "^4.17.2"
+  "bugs": {
+    "url": "https://github.com/mikiSpoko200/weppo-projekt/issues"
   },
-  "devDependencies": {
-    "@types/cookie-parser": "^1.4.2",
-    "@types/ejs": "^3.1.0",
-    "@types/express": "^4.17.13",
-    "ejs": "^3.1.6"
-  },
-  "description": ""
+  "homepage": "https://github.com/mikiSpoko200/weppo-projekt#readme"
 }
