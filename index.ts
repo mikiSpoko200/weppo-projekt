@@ -13,6 +13,8 @@ const enum AppConfig {
 app.set(AppConfig.ViewEngine, 'ejs');
 app.set(AppConfig.ViewDirectory, './views');
 
+app.use( express.static( "./static" ) );
+
 /*
 * TODO:
 *  - koszyk
@@ -77,7 +79,7 @@ app.use("/product/", (req: Request, res: Response, next: NextFunction) => {
 
 
 // region routing: 404
-app.use((req,res) => {
+app.use((req: Request, res: Response) => {
     res.render('404.ejs', { url : req.url });
 });
 // endregion

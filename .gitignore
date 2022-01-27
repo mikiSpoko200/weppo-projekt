@@ -109,3 +109,7 @@ dist
 # VSC
 
 .vscode/
+
+# Mikołaj local config
+
+temp/
