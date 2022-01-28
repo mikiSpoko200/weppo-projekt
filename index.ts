@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {Request, Response, NextFunction} from 'express';
+import { Request, Response } from 'express';
 
 const app = express.default();
 
@@ -13,7 +13,7 @@ const enum AppConfig {
 app.set(AppConfig.ViewEngine, 'ejs');
 app.set(AppConfig.ViewDirectory, './views');
 
-app.use(express.static("./static"));
+app.use(express.static('./static'));
 
 /*
 * TODO:
@@ -29,53 +29,59 @@ app.use(express.static("./static"));
 // NOTE: wszystkie middle-ware, poza ostatnim, przyjmują 3-ci parametr: next: NextFunction
 
 // region routing: /
-app.get("/", (req: Request, res: Response) => {
-    console.log("homepage!!");
-    res.render("index");
+app.get('/', (req: Request, res: Response) => {
+    console.log('homepage!!');
+    res.render('index');
 });
-// endregion
-
-
-// region routing: /search/
-app.get("/search/", (req: Request, res: Response) => {
-    console.log("get search");
-    res.render("search", {product_type: 'foobar'});
-});
-
-// app.post("/search/", (req: Request, res: Response, next: NextFunction) => {
-//     let product_type = req.query.product_type;
-//     console.log("post search");
-//     res.render("search", {product_type: product_type + ' jooł'})
-//     next();
-// });
 // endregion
 
 
 // region routing: /browse/
-app.get("browse/", (req: Request, res: Response) => {
-    res.render("browse");
+app.get('/browse/', (req: Request, res: Response) => {
+    res.render('browse');
 });
 // endregion
 
 
 // region routing: /login/
-app.get("/login", (req: Request, res: Response) => {
-    console.log("login");
-    res.render("login");
+app.get('/login', (req: Request, res: Response) => {
+    console.log('login');
+    res.render('login');
+});
+
+const enum LoginModelParams {
+    Email = 'email'
+}
+
+type LoginForm =  {
+    email: String;
+    password: String;
+}
+
+app.post('/login', (req: Request, res: Response) => {
+    console.log(req.body, "adawe a");
+    res.render('login');
+});
+// endregion
+
+
+// region routing: /cart/
+app.get('/cart/', (req: Request, res: Response) => {
+    res.render('cart');
 });
 // endregion
 
 
 // region routing: /register/
-app.get("/register/", (req: Request, res: Response) => {
-    res.render("login");
+app.get('/register/', (req: Request, res: Response) => {
+    res.render('register');
 });
 // endregion
 
 
 // region routing: /product/
-app.use("/product/", (req: Request, res: Response) => {
-    res.render("product", {product_id: 1234321});
+app.use('/product/', (req: Request, res: Response) => {
+    res.render('product', {product_id: 1234321});
 });
 // endregion
 
@@ -83,7 +89,7 @@ app.use("/product/", (req: Request, res: Response) => {
 // region routing: 404
 app.use((req: Request, res: Response) => {
     res.render('404.ejs', {url: req.url});
-    //res.end("nie ma!");
+    //res.end('nie ma!');
 });
 // endregion
 

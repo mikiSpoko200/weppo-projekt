@@ -1,71 +1,51 @@
 <!doctype html>
-<html lang="en">
+<html lang="pl-PL">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-
-
-<!-- Footer -->
-<div class="wrapper row3">
-    <div id="footer" class="clear">
-        <!-- Section One -->
-        <section class="one_quarter">
-            <h2 class="title">Link Block</h2>
-            <nav>
-                <ul>
-                    <li><a href="#">Lorem ipsum dolor sit</a></li>
-                    <li><a href="#">Amet consectetur</a></li>
-                    <li><a href="#">Praesent vel sem id</a></li>
-                    <li><a href="#">Curabitur hendrerit est</a></li>
-                    <li class="last"><a href="#">Sed a nulla urna</a></li>
-                </ul>
-            </nav>
-        </section>
-        <!-- Section Two -->
-        <section class="one_quarter">
-            <h2 class="title">Link Block</h2>
-            <nav>
-                <ul>
-                    <li><a href="#">Lorem ipsum dolor sit</a></li>
-                    <li><a href="#">Amet consectetur</a></li>
-                    <li><a href="#">Praesent vel sem id</a></li>
-                    <li><a href="#">Curabitur hendrerit est</a></li>
-                    <li class="last"><a href="#">Sed a nulla urna</a></li>
-                </ul>
-            </nav>
-        </section>
-        <!-- Section Three -->
-        <section class="one_quarter">
-            <h2 class="title">Link Block</h2>
-            <nav>
-                <ul>
-                    <li><a href="#">Lorem ipsum dolor sit</a></li>
-                    <li><a href="#">Amet consectetur</a></li>
-                    <li><a href="#">Praesent vel sem id</a></li>
-                    <li><a href="#">Curabitur hendrerit est</a></li>
-                    <li class="last"><a href="#">Sed a nulla urna</a></li>
-                </ul>
-            </nav>
-        </section>
-        <!-- Section Four -->
-        <section class="one_quarter lastbox">
-            <h2 class="title">Link Block</h2>
-            <nav>
-                <ul>
-                    <li><a href="#">Lorem ipsum dolor sit</a></li>
-                    <li><a href="#">Amet consectetur</a></li>
-                    <li><a href="#">Praesent vel sem id</a></li>
-                    <li><a href="#">Curabitur hendrerit est</a></li>
-                    <li class="last"><a href="#">Sed a nulla urna</a></li>
-                </ul>
-            </nav>
-        </section>
-        <!-- / Section -->
+<div class="wrapper row1">
+    <header id="header" class="clear">
+        <div id="hgroup">
+            <h1><a href="/">Projekt WEPPO 2022</a></h1>
+            <h2>Joanna Stachowicz</h2>
+            <h2>Patryk Mazur</h2>
+            <h2>Mikołaj Depta</h2>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="/">Strong główna</a></li>
+                <li><a href="browse">Przeglądaj</a></li>
+                <li><a href="register">Rejestracja</a></li>
+                <li><a href="cart">Koszyk</a></li>
+            </ul>
+        </nav>
+    </header>
+</div>
+<!-- content -->
+<div class="wrapper row2">
+    <div id="container" class="clear">
+        <div id="homepage">
+            <form method="POST">
+                <div class="form-style-5">
+                    <h1> TODO: TUTAJ DODAJ POLA Z BAZKI! </h1>
+                    <form method="POST">
+                        <fieldset>
+                            <legend><span class="number">1</span> Candidate Info</legend>
+                            <input type="email" name="email" placeholder=<%= 0 ? "Email" : "tutaj emial z sesji" %>>
+                            <input type="password" name="password" placeholder="Password">
+                        </fieldset>
+                        <button>Zapisz</button>
+                        <input type="submit" value="Zaloguj"/>
+                    </form>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 <!-- Copyright -->

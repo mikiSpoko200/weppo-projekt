@@ -19,9 +19,9 @@
         </div>
         <nav>
             <ul>
-                <li><a href="/">Strona główna</a></li>
+                <li><a href="/">Strong główna</a></li>
+                <li><a href="browse">Przeglądaj</a></li>
                 <li><a href="login">Logowanie</a></li>
-                <li><a href="register">Rejestracja</a></li>
                 <li><a href="cart">Koszyk</a></li>
             </ul>
         </nav>
@@ -29,7 +29,21 @@
 </div>
 <!-- content -->
 <div class="wrapper row2">
-    <h1> Browse </h1>
+    <div id="container" class="clear">
+        <div id="homepage">
+            <fieldset>
+                <legend><span class="number">1</span> Candidate Info</legend>
+                <input type="email" name="email" placeholder=<%= 1 ? "Your Email" : "tutaj emial z sesji" %>>
+                <input type="text" name="field2" placeholder="Your Email *">
+                <textarea name="field3" placeholder="About yourself"></textarea>
+            </fieldset>
+            <fieldset>
+                <legend><span class="number">2</span> Additional Info</legend>
+                <textarea name="field3" placeholder="About Your School"></textarea>
+            </fieldset>
+            <input type="submit" value="Apply"/>
+        </div>
+    </div>
 </div>
 <!-- Copyright -->
 <div class="wrapper row4">
