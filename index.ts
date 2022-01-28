@@ -17,6 +17,22 @@ app.use(express.static('./static'));
 app.use(express.urlencoded({extended:true}));
 
 /*
+ * TODO: 28.01.2020:
+ *  1. Bazka - koniecznie bo reszta apki na niej zależy
+ *   reszta zależy od pkt 1., patrz pkt 1.
+ *  2. Podpinanie bazki - wyświetlanie produktów, filtrowanie - rosnąco/malejąco względem X, po gatunkach, czy dostępne, tytuł, reżyser, kraj produkcji.
+ *  3. Wybieranie produktu podczas przeglądania.
+ *  4. Sesja na ciastkach
+ *   reszta zależy na 4.
+ *  5. koszyk
+ * TODO:
+ *  6. logowanie
+ *  7. rejestrowanie
+ */
+
+
+
+/*
 * TODO:
 *  - koszyk
 *  - wybieranie produktu

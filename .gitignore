@@ -117,3 +117,4 @@ temp/
 # dont track .js files
 
 *.js
+*.png
