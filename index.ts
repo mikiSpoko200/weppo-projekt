@@ -14,6 +14,7 @@ app.set(AppConfig.ViewEngine, 'ejs');
 app.set(AppConfig.ViewDirectory, './views');
 
 app.use(express.static('./static'));
+app.use(express.urlencoded({extended:true}));
 
 /*
 * TODO:
@@ -48,15 +49,6 @@ app.get('/login', (req: Request, res: Response) => {
     console.log('login');
     res.render('login');
 });
-
-const enum LoginModelParams {
-    Email = 'email'
-}
-
-type LoginForm =  {
-    email: String;
-    password: String;
-}
 
 app.post('/login', (req: Request, res: Response) => {
     console.log(req.body, "adawe a");
