@@ -113,3 +113,7 @@ dist
 # Mikołaj local config
 
 temp/
+
+# dont track .js files
+
+*.js
