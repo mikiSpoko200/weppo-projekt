@@ -18,16 +18,24 @@ app.use(express.urlencoded({extended:true}));
 
 /*
  * TODO: 28.01.2020:
- *  1. Bazka - koniecznie bo reszta apki na niej zależy
- *   reszta zależy od pkt 1., patrz pkt 1.
+ *  =--------------- EJS i baza
  *  2. Podpinanie bazki - wyświetlanie produktów, filtrowanie - rosnąco/malejąco względem X, po gatunkach, czy dostępne, tytuł, reżyser, kraj produkcji.
  *  3. Wybieranie produktu podczas przeglądania.
+ *  =--------------- Sesja
  *  4. Sesja na ciastkach
- *   reszta zależy na 4.
  *  5. koszyk
- * TODO:
- *  6. logowanie
- *  7. rejestrowanie
+ *  =-------------- Bezpieczne hasła
+ *  6. logowanie zarówno użytkownik jak i admin
+ *  7. rejestrowanie zarówno użytkownik, admina rejestrujemy my albo coś.
+ *
+ * Użytkownik:
+ *    musi móc:
+ *  - stworzyć konto
+ *  - dodawać przedmioty do koszyka
+ *  -
+ *
+ *
+ *
  */
 
 
@@ -55,7 +63,7 @@ app.get('/', (req: Request, res: Response) => {
 
 // region routing: /browse/
 app.get('/browse/', (req: Request, res: Response) => {
-    res.render('browse');
+    res.render('browse', {query_results: [1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8]});
 });
 // endregion
 

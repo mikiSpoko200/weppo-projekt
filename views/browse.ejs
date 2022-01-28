@@ -29,7 +29,28 @@
 </div>
 <!-- content -->
 <div class="wrapper row2">
-    <h1> Browse </h1>
+    <% let n = 25; %>
+    <% let query_results = [1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5]; %>
+
+    <div id="container" style="display: flex;">
+        <section>
+            <% for (var i = 0; i < query_results.length; i ++) { %>
+                <% if (i % 3 === 2) { %>
+                    <article class="one_third lastbox" >
+                <% } else { %>
+                    <article class="one_third">
+                <% } %>
+                        <figure>
+                            <img src="images/pic1.png" style="width: 300px; height: 300px;">
+                            <figcaption> <%= query_results[i] %></figcaption>
+                        </figure>
+                    </article>
+                <% if (i % 3 === 2) { %>
+                    </section></div><div id="container" style="display: flex;"><section>
+                <% } %>
+            <% } %>
+            </section>
+        </div>
 </div>
 <!-- Copyright -->
 <div class="wrapper row4">
