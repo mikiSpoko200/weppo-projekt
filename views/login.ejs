@@ -33,14 +33,12 @@
         <div id="homepage">
             <form method="POST">
                 <div class="form-style-5">
-                    <h1> TODO: TUTAJ DODAJ POLA Z BAZKI! </h1>
                     <form method="POST">
                         <fieldset>
                             <legend><span class="number">1</span> Candidate Info</legend>
-                            <input type="email" name="email" placeholder=<%= 0 ? "Email" : "tutaj emial z sesji" %>>
-                            <input type="password" name="password" placeholder="Password">
+                            <input type="email" name="email" placeholder= <%= email ? email : "Email" %>>
+                            <input type="password" name="password" placeholder="Password" value= <%= if (password) { password.toString() } %>>
                         </fieldset>
-                        <button>Zapisz</button>
                         <input type="submit" value="Zaloguj"/>
                     </form>
                 </div>
