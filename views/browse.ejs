@@ -6,7 +6,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="/style.css"/>
 </head>
 <body>
 <div class="wrapper row1">
@@ -29,28 +29,31 @@
 </div>
 <!-- content -->
 <div class="wrapper row2">
-    <% let n = 25; %>
-    <% let query_results = [1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5]; %>
 
     <div id="container" style="display: flex;">
         <section>
-            <% for (var i = 0; i < query_results.length; i ++) { %>
+            <% for (var i = 0; i < query_results.length; i++) { %>
                 <% if (i % 3 === 2) { %>
-                    <article class="one_third lastbox" >
-                <% } else { %>
+                <article class="one_third lastbox">
+                    <% } else { %>
                     <article class="one_third">
-                <% } %>
+                        <% } %>
                         <figure>
-                            <img src="images/pic1.png" style="width: 300px; height: 300px;">
-                            <figcaption> <%= query_results[i] %></figcaption>
+                            <img src="<%= query_results[i][2] %>" style="width: 300px; height: 300px;">
+                            <figcaption> <%= query_results[i][0] %></figcaption>
+                            <br>
+                            <figcaption> <%= query_results[i][1] %></figcaption>
                         </figure>
                     </article>
-                <% if (i % 3 === 2) { %>
-                    </section></div><div id="container" style="display: flex;"><section>
-                <% } %>
+                    <% if (i % 3 === 2) { %>
+        </section>
+    </div>
+    <div id="container" style="display: flex;">
+        <section>
             <% } %>
-            </section>
-        </div>
+            <% } %>
+        </section>
+    </div>
 </div>
 <!-- Copyright -->
 <div class="wrapper row4">

@@ -1,14 +1,15 @@
 import * as express from 'express';
-import { Request, Response } from 'express';
+import {Request, Response} from 'express';
 import session from 'express-session';
-import { User, Cart } from "./routes/login";
-import pg from "pg";
+import {User, Cart} from "./routes/login";
+import {get_items} from "./routes/browse";
+import pg from 'pg';
 
 const pool = new pg.Pool({
-        host: "localhost",
-        database: "lista8",
-        user: "postgres",
-        password: "password"
+    host: "localhost",
+    database: "lista8",
+    user: "postgres",
+    password: "foo"
 });
 
 
@@ -28,16 +29,16 @@ app.set(AppConfig.ViewEngine, 'ejs');
 app.set(AppConfig.ViewDirectory, './views');
 
 app.use(express.static('./static'));
-app.use(express.urlencoded({extended:true}));
-app.use(session({resave:true, saveUninitialized: true, secret: SIGNATURE}));
+app.use(express.urlencoded({extended: true}));
+app.use(session({resave: true, saveUninitialized: true, secret: SIGNATURE}));
 
 
 declare global {
-  namespace Express {
-    interface Session {
-      user: User
+    namespace Express {
+        interface Session {
+            user: User
+        }
     }
-  }
 }
 
 /*
@@ -62,16 +63,16 @@ declare global {
 * */
 
 
-async function get_user(email: string): Promise<User> {
-    try {
-        let query_result = await pool.query('select (surname, email, password) from users');
-        let user = query_result.rows[0];
-        let cart = new Cart();
-        return new Promise(User(user.email, user.password, cart));
-    } catch (err) {
-        console.log(err);
-    }
-}
+// async function get_user(email: string): Promise<User> {         // Zakomentowałem bo mi coś tutaj wywalało
+//     try {
+//         let query_result = await pool.query('select (surname, email, password) from users');
+//         let user = query_result.rows[0];
+//         let cart = new Cart();
+//         return new Promise(User(user.email, user.password, cart));
+//     } catch (err) {
+//         console.log(err);
+//     }
+// }
 
 
 // region routing: /
@@ -84,7 +85,18 @@ app.get('/', (req: Request, res: Response) => {
 
 // region routing: /browse/
 app.get('/browse/', (req: Request, res: Response) => {
-    res.render('browse', {query_results: [1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8]});
+    get_items('').then(items => {
+        res.render('browse', {query_results: items});
+    })
+});
+// endregion
+
+// region routing: /browse/
+app.get('/browse/:options', (req: Request, res: Response) => { // Da się zrobić to pod jednym browsem?
+    get_items(req.params.options).then(items => {
+        // console.log(items)
+        res.render('browse', {query_results: items});
+    })
 });
 // endregion
 
@@ -98,7 +110,7 @@ app.get('/login', (req: Request, res: Response) => {
         console.log("Session data found");
         console.log(`${!req.session?.user.email}, ${!req.session?.user.password}`);
     }
-    res.render('login', { email: req.session?.user?.email, password: req.session?.user?.password });
+    res.render('login', {email: req.session?.user?.email, password: req.session?.user?.password});
 });
 
 app.post('/login', (req: Request, res: Response) => {

@@ -10,3 +10,25 @@
  *    Przydatne elementy składni w sql'u LIMIT X, TAKE X, SKIP X, ORDER BY <pole>, ASCENDING, DESCENDING.
  *    nie no będzie sztonks
  */
+
+const pg = require('pg');
+
+export async function get_items(options: string) {
+    const pool = new pg.Pool({
+        host: 'localhost',
+        database: 'shop',
+        user: 'postgres',
+        password: 'foo'
+    });
+    try {
+        console.log(options);
+        let items: any[] = [];
+        const result = await pool.query('select * from movies');
+        result.rows.forEach((r: { title: string; price: number; description: string; image: string; }) => {
+            items.push([r.title, r.description, r.image])
+        });
+        return items;
+    } catch (err) {
+        console.log(err);
+    }
+}
