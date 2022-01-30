@@ -1,17 +1,9 @@
 import * as express from 'express';
-import {Request, Response} from 'express';
+import { Request, Response } from 'express';
 import session from 'express-session';
-import {User, Cart} from "./routes/login";
-import {get_items} from "./routes/browse";
-import pg from 'pg';
+import { User, Admin, user_login_data, admin_login_data } from "./routes/login";
+import { get_items } from "./routes/browse";
 
-
-const pool = new pg.Pool({
-    host: "localhost",
-    database: "lista8",
-    user: "postgres",
-    password: "foo"
-});
 
 
 const app = express.default();
@@ -37,7 +29,7 @@ app.use(express.static('public'));
 declare global {
     namespace Express {
         interface Session {
-            user: User
+            logged: Admin | User;
         }
     }
 }
@@ -64,16 +56,6 @@ declare global {
 * */
 
 
-// async function get_user(email: string): Promise<User> {         // Zakomentowałem bo mi coś tutaj wywalało
-//     try {
-//         let query_result = await pool.query('select (surname, email, password) from users');
-//         let user = query_result.rows[0];
-//         let cart = new Cart();
-//         return new Promise(User(user.email, user.password, cart));
-//     } catch (err) {
-//         console.log(err);
-//     }
-// }
 
 
 // region routing: /
@@ -100,17 +82,31 @@ app.get('/login', (req: Request, res: Response) => {
         console.log("No session data found.");
     } else {
         console.log("Session data found");
-        console.log(`${!req.session?.user.email}, ${!req.session?.user.password}`);
+        console.log(`${!req.session!.user!.email}, ${!req.session!.user!.password}`);
     }
-    res.render('login', {email: req.session?.user?.email, password: req.session?.user?.password});
+    res.render('login', {email: req.session!.user!.email, password: req.session!.user!.password});
 });
 
 app.post('/login', (req: Request, res: Response) => {
     console.log(req.body)
-    req.session!.user!.email = req.body.email;
-    req.session!.user!.password = req.body.password;
-    console.log(`Posted: ${req.session?.user?.email}, ${req.session?.user?.password}`);
-    res.redirect('browse')
+    // TODO: validate sent data.
+    user_login_data(req.body.email).then(
+        user_password => {
+            if (user_password !== null) {
+                if (user_password[1] == req.body.password) {
+                    // TODO: how can I get rig of session! ?
+                    req.session!.user = user_password[0];
+                    res.redirect('browse')
+                } else {
+                    res.redirect('login');
+                }
+            } else {
+                res.redirect('login');
+                // błędny login --> redirect na login/
+            }
+        }
+    );
+
 });
 // endregion
 

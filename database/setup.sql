@@ -69,7 +69,8 @@ create table if not exists tapes (
 
 create table if not exists admins (
     id serial primary key,
-    user_id integer references users (id) default NULL,
+    name varchar(20) not null,
+    surname varchar(40) not null,
     email text not null unique,
     password text not null
 );

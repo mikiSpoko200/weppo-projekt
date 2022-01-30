@@ -18,11 +18,11 @@ export async function get_items(options: any) {
         host: 'localhost',
         database: 'shop',
         user: 'postgres',
-        password: 'foo'
+        password: 'password'
     });
     try {
         let items: any[] = [];
-        const result = await pool.query('select * from movies');
+        const result = await pool.query("select * from movies");
         if (options) {
             options = options.toLowerCase();
             result.rows.forEach((r: { title: string; price: number; description: string; image: string; }) => {
@@ -30,6 +30,7 @@ export async function get_items(options: any) {
                     items.push([r.title, r.description, r.image])
             });
         } else {
+            console.log(":)");
 
             result.rows.forEach((r: { title: string; price: number; description: string; image: string; }) => {
                 items.push([r.title, r.description, r.image])
