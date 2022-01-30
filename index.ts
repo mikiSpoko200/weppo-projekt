@@ -5,6 +5,7 @@ import {User, Cart} from "./routes/login";
 import {get_items} from "./routes/browse";
 import pg from 'pg';
 
+
 const pool = new pg.Pool({
     host: "localhost",
     database: "lista8",
@@ -14,7 +15,6 @@ const pool = new pg.Pool({
 
 
 const app = express.default();
-
 
 const SIGNATURE = '64655bbc4bc11794cc67c300beaba73ab4ea957e6e2b3d1430bce3480fdf3dc997a1f174abe8fa4ce5986588e2013c6d5ae046937557e12e491783f1343e7d5c';
 
@@ -31,6 +31,7 @@ app.set(AppConfig.ViewDirectory, './views');
 app.use(express.static('./static'));
 app.use(express.urlencoded({extended: true}));
 app.use(session({resave: true, saveUninitialized: true, secret: SIGNATURE}));
+app.use(express.static('public'));
 
 
 declare global {
@@ -85,16 +86,7 @@ app.get('/', (req: Request, res: Response) => {
 
 // region routing: /browse/
 app.get('/browse/', (req: Request, res: Response) => {
-    get_items('').then(items => {
-        res.render('browse', {query_results: items});
-    })
-});
-// endregion
-
-// region routing: /browse/
-app.get('/browse/:options', (req: Request, res: Response) => { // Da się zrobić to pod jednym browsem?
-    get_items(req.params.options).then(items => {
-        // console.log(items)
+    get_items(req.query.search).then(items => {
         res.render('browse', {query_results: items});
     })
 });

@@ -29,7 +29,11 @@
 </div>
 <!-- content -->
 <div class="wrapper row2">
-
+    <form action="/browse/" method="get" style="color:black;text-align:center;position:relative;bottom:-15px;">
+        <label for="search">Wyszukaj: </label>
+        <input id="search" type="text" name="search">
+        <input type="submit" value="Szukaj">
+    </form>
     <div id="container" style="display: flex;">
         <section>
             <% for (var i = 0; i < query_results.length; i++) { %>

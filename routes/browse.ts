@@ -13,7 +13,7 @@
 
 const pg = require('pg');
 
-export async function get_items(options: string) {
+export async function get_items(options: any) {
     const pool = new pg.Pool({
         host: 'localhost',
         database: 'shop',
@@ -21,12 +21,20 @@ export async function get_items(options: string) {
         password: 'foo'
     });
     try {
-        console.log(options);
         let items: any[] = [];
         const result = await pool.query('select * from movies');
-        result.rows.forEach((r: { title: string; price: number; description: string; image: string; }) => {
-            items.push([r.title, r.description, r.image])
-        });
+        if (options) {
+            options = options.toLowerCase();
+            result.rows.forEach((r: { title: string; price: number; description: string; image: string; }) => {
+                if (r.description.toLowerCase().includes(options) || r.title.toLowerCase().includes(options))
+                    items.push([r.title, r.description, r.image])
+            });
+        } else {
+
+            result.rows.forEach((r: { title: string; price: number; description: string; image: string; }) => {
+                items.push([r.title, r.description, r.image])
+            });
+        }
         return items;
     } catch (err) {
         console.log(err);
