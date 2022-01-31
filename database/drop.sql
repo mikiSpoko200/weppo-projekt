@@ -1,11 +1,11 @@
 -- drop tables
 
-
-drop table users;
-drop table genres;
-drop table directors;
-drop table movies;
-drop table movies_genres;
-drop table orders;
-drop table tapes;
-drop table admins;
+drop type gender;
+drop table users cascade;
+drop table genres cascade;
+drop table directors cascade;
+drop table movies cascade;
+drop table movies_genres cascade;
+drop table orders cascade;
+drop table tapes cascade;
+drop table admins cascade;

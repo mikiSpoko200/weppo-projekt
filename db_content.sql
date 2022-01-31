@@ -12,3 +12,4 @@ insert into movies values
     (default, 'Fred: The movie',1,NULL,'2015-10-20',12,'https://m.media-amazon.com/images/I/811xTUbh46L.jpg','Fred jest zakochany w Judy i chce, żeby się w nim zakochała'),
     (default, 'Wyjazd Integracyjny',1,NULL,'2015-12-01',10,'https://fwcdn.pl/fpo/18/49/601849/7401401.3.jpg','Fajtłapowaty dyrektor korporacji Polish Lody zaprasza do hotelu wszystkich klientów i pracowników w celu zacieśnienia więzi zawodowych. Sytuacja wymyka się jednak spod kontroli.'),
     (default, 'Fred: Obóz obciachu',1,NULL,'2015-10-10',14,'https://images-na.ssl-images-amazon.com/images/I/91ce+pmn6RL._RI_.jpg','Zmuszony do uczestnictwa w obozie letnim nastolatek i jego nowi przyjaciele rywalizują z rywalami w serii gier.');
+
