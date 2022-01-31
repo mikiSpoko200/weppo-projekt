@@ -27,24 +27,69 @@
         </nav>
     </header>
 </div>
+
+<!--
+ *  This model expects a { message: Optional[string], status: Optional[string] } that should give the user feedback
+ *  on their actions Message can either inform user that registration either succeeded or failed
+ *  - that what status is for.
+-->
 <!-- content -->
 <div class="wrapper row2">
     <div id="container" class="clear">
         <div id="homepage">
-            <fieldset>
-                <legend><span class="number">1</span> Candidate Info</legend>
-                <input type="email" name="email" placeholder=<%= 1 ? "Your Email" : "tutaj emial z sesji" %>>
-                <input type="text" name="field2" placeholder="Your Email *">
-                <textarea name="field3" placeholder="About yourself"></textarea>
-            </fieldset>
-            <fieldset>
-                <legend><span class="number">2</span> Additional Info</legend>
-                <textarea name="field3" placeholder="About Your School"></textarea>
-            </fieldset>
-            <input type="submit" value="Apply"/>
+            <form method="POST">
+                <h1 style="text-align: center">Rejestracja nowego konta</h1>
+                <div class="form-style-5">
+                    <form method="POST">
+                        <fieldset>
+                            <label>
+                                <input name="name" type="text" maxlength="20" placeholder="Imię *" required>
+                            </label>
+                            <label>
+                                <input name="surname" type="text" maxlength="40" placeholder="Nazwisko">
+                            </label>
+                            <label>
+                                <input name="email" type="email" placeholder="Adres Email *" required>
+                            </label>
+                            <label>
+                                <input name="password" type="password" placeholder="Hasło" required>
+                            </label>
+                            <label>
+                                <input name="password_repeat" type="password" placeholder="Powtórz Hasło *" required>
+                            </label>
+                            <label>
+                                <input name="phone_number" type="tel" placeholder="Numer telefonu">
+                            </label>
+                            <label>
+                                <input name="city" type="text" maxlength="20" placeholder="Miasto *" required>
+                            </label>
+                            <label>
+                                <input name="post_code" type="text" maxlength="5" placeholder="Kod pocztowy *" required>
+                            </label>
+                            <label>
+                                <input name=street"" type="text" placeholder="Ulica *" required>
+                            </label>
+                            <label>
+                                <input name="house_number" type="text" placeholder="Numer domu *" required>
+                            </label>
+                            <label>
+                                <input name="local_number" type="text" placeholder="Numer mieszkania *" required>
+                            </label>
+                        </fieldset>
+                        <% if ( locals.message && locals.status ) { %>
+                            <div class= <%= locals.status === "success" ? "message success" : "message error" %>> <%= locals.message  %></div>
+                        <% } %>
+                        <input type="submit" value="Zaloguj"/>
+                    </form>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
+
+
+
 <!-- Copyright -->
 <div class="wrapper row4">
     <footer id="copyright" class="clear">

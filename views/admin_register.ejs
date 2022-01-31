@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="pl-PL">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div class="wrapper row1">
+    <header id="header" class="clear">
+        <div id="hgroup">
+            <h1><a href="/">Projekt WEPPO 2022</a></h1>
+            <h2>Joanna Stachowicz</h2>
+            <h2>Patryk Mazur</h2>
+            <h2>Mikołaj Depta</h2>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="/">Strong główna</a></li>
+                <li><a href="browse">Przeglądaj</a></li>
+                <li><a href="login">Logowanie</a></li>
+                <li><a href="cart">Koszyk</a></li>
+            </ul>
+        </nav>
+    </header>
+</div>
+
+<!--
+ *  This model expects a { message: Optional[string], status: Optional[string] } that should give the user feedback
+ *  on their actions Message can either inform user that registration either succeeded or failed
+ *  - that what status is for.
+-->
+<!-- content -->
+<div class="wrapper row2">
+    <div id="container" class="clear">
+        <div id="homepage">
+            <form method="POST">
+                <div class="form-style-5">
+                    <form method="POST">
+                        <h1>Rejestracja nowego konta administratora</h1>
+                        <fieldset>
+                            <label>
+                                <input name="name" type="text" maxlength="20" placeholder="Imię *" required>
+                            </label>
+                            <label>
+                                <input name="surname" type="text" maxlength="40" placeholder="Nazwisko" required>
+                            </label>
+                            <label>
+                                <input name="email" type="email" maxlength="" placeholder="Adres Email *" required>
+                            </label>
+                            <label>
+                                <input name="password" type="password" placeholder="Hasło" required>
+                            </label>
+                            <label>
+                                <input name="password_repeat" type="password" placeholder="Powtórz Hasło *" required>
+                            </label>
+                        </fieldset>
+                        <% if ( locals.message && locals.status ) { %>
+                            <div class= <% locals.status === "success" ? "message success" : "message error" %>> <%= locals.message  %></div>
+                        <% } %>
+                        <input type="submit" value="Zaloguj"/>
+                    </form>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Copyright -->
+<div class="wrapper row4">
+    <footer id="copyright" class="clear">
+        <p class="fl_left">Copyright &copy; 2018 - All Rights Reserved - <a href="#">Domain Name</a></p>
+        <p class="fl_right">Template by <a target="_blank" href="https://www.os-templates.com/"
+                                           title="Free Website Templates">OS Templates</a></p>
+    </footer>
+</div>
+</body>
+</html>

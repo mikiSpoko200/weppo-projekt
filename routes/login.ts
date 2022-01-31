@@ -1,16 +1,22 @@
-import pg from "pg";
+import {Request, Response} from 'express';
+import bcrypt from 'bcrypt';
+import pg from 'pg';
 
 
-const pool = new pg.Pool({
-    host: "localhost",
-    database: "lista8",
-    user: "postgres",
-    password: "password"
+// database connection
+export const pool = new pg.Pool({
+    host: 'localhost',
+    database: 'shop',
+    user: 'postgres',
+    password: 'password'
 });
 
 
+const ASSUME_HTTPS = false;
+
+
+// region Session data structures
 type Password = string;
-type Email = string;
 
 
 interface ILogged {
@@ -34,14 +40,18 @@ export class Cart {
 
 // representation of user account.
 export class User implements ILogged {
-    constructor(id: string, name: string, surname: string, cart: Cart, ) {
+    constructor(id: string, name: string, surname: string, email: string, password: string, cart: Cart) {
         this.id = id;
         this.name = name;
         this.surname = surname;
+        this.email = email;
+        this.password = password;
         this.cart = cart;
     }
 
     cart: Cart;
+    readonly email: string;
+    readonly password: string;
     readonly name: string;
     readonly surname: string;
     readonly id: string;
@@ -60,10 +70,12 @@ export class Admin implements ILogged {
     readonly id: string;
 }
 
+// endregion
+
 /** Query database for user login and password.
  * @param email {string} email associated with the account.
  */
-export async function user_login_data(email: string): Promise<[User, Password] | null> {
+async function user_login_data(email: string): Promise<User | null> {
     try {
         let query_result = await pool.query(
             "select (id, name, surname, password) from users where email like '$1'", [email]
@@ -71,7 +83,7 @@ export async function user_login_data(email: string): Promise<[User, Password] |
         if (query_result.rows.length == 1) {
             let user_data = query_result.rows[0];
             let cart = new Cart();
-            return [new User(user_data.id, user_data.name, user_data.surname, cart), user_data.password];
+            return new User(user_data.id, user_data.name, user_data.surname, email, user_data.password, cart);
         } else {
             return null;
         }
@@ -84,7 +96,7 @@ export async function user_login_data(email: string): Promise<[User, Password] |
 /** Query database for admin login and password.
  * @param email {string} email associated with the account.
  */
-export async function admin_login_data(email: string): Promise<[Admin, Password] | null> {
+async function admin_login_data(email: string): Promise<[Admin, Password] | null> {
     try {
         let query_result = await pool.query(
             "select (id, name, surname, password) from admins where email like '$1'", [email]
@@ -99,4 +111,56 @@ export async function admin_login_data(email: string): Promise<[Admin, Password]
         console.log(err);
         return null;
     }
+}
+
+
+export function get_handler(req: Request, res: Response) {
+    /**
+     *  1. If session is already established, fill the form with saved data else do not.
+     *  FIXME: CREATE APPROPRIATE MODEL FOR THE VIEW.
+     */
+    if (req.session) {
+        console.log('Session data found');
+        res.render('login', {email: req.session.user!.email, password: req.session!.user!.password});
+    } else {
+        console.log('No session data found.');
+    }
+    res.render('login', {email: req.session!.user!.email, password: req.session!.user!.password});
+}
+
+
+class LoginForm {
+    constructor(email: string, password: string) {
+        this.email = email;
+        this.password = password;
+    }
+
+    readonly email: string;
+    readonly password: string;
+}
+
+
+enum LoginStatus {
+    UNRECOGNIZED_EMAIL,
+    WRONG_PASSWORD,
+    SUCCESS,
+}
+
+
+export async function post_handler(req: Request<{}, {}, LoginForm>, res: Response) {
+    const user = await user_login_data(req.body.email);
+    if (user === null) {
+        res.render('login', { message: 'Podany adres email nie jest zarejestrowany', status: 'error'});
+        return;
+    }
+
+    const is_received_correct = await bcrypt.compare(req.body.password, user.password);
+
+    if (is_received_correct) {
+        req.session.user = user;
+        res.render('login', { message: "Logowanie zakończone skucesem", state: "success"});
+        return;
+    }
+
+    res.render('login', { message: "Niepoprawne hasło", state: "error"});
 }
