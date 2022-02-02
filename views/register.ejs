@@ -64,10 +64,10 @@
                                 <input name="city" type="text" maxlength="20" placeholder="Miasto *" required>
                             </label>
                             <label>
-                                <input name="post_code" type="text" maxlength="5" placeholder="Kod pocztowy *" required>
+                                <input name="post_code" type="text" maxlength="6" placeholder="Kod pocztowy *" required>
                             </label>
                             <label>
-                                <input name=street"" type="text" placeholder="Ulica *" required>
+                                <input name="street" type="text" placeholder="Ulica *" required>
                             </label>
                             <label>
                                 <input name="house_number" type="text" placeholder="Numer domu *" required>
@@ -79,7 +79,7 @@
                         <% if ( locals.message && locals.status ) { %>
                             <div class= <%= locals.status === "success" ? "message success" : "message error" %>> <%= locals.message  %></div>
                         <% } %>
-                        <input type="submit" value="Zaloguj"/>
+                        <input type="submit" value="Zarejestruj"/>
                     </form>
                 </div>
             </form>

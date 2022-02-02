@@ -3,9 +3,12 @@ import { Request, Response } from 'express';
 import session from 'express-session';
 import * as login from './routes/login';
 import { get_items } from './routes/browse';
-import * as register from './routes/register'
+import * as register from './routes/register';
+import * as multer from 'multer';
+import pg from "pg";
 
 
+const upload = multer.default();
 const app = express.default();
 const SIGNATURE = '64655bbc4bc11794cc67c300beaba73ab4ea957e6e2b3d1430bce3480fdf3dc997a1f174abe8fa4ce5986588e2013c6d5ae046937557e12e491783f1343e7d5c';
 
@@ -25,7 +28,7 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     secret: SIGNATURE,
-    cookie: { maxAge: 1000 * 60 * 60 }
+    cookie: { maxAge: 1000 * 60 * 60, secure: false }
 }));
 app.use(express.static('public'));
 
@@ -83,8 +86,24 @@ app.post('/login', login.post_handler);
 
 // region routing: /cart/
 app.get('/cart', (req: Request, res: Response) => {
-    res.render('cart', req.session?.user?.cart.products);
+    res.render('cart', req.session?.user?.cart.product_ids);
 });
+
+// database connection
+export const pool = new pg.Pool({
+    host: 'localhost',
+    database: 'shop',
+    user: 'postgres',
+    password: 'password'
+});
+
+app.post('/cart/load_products', upload.any(), (req, res) => {
+    pool.query('select * from movies').then(result => {
+        let formatted_results = result.rows.map(row => `${row.title}, ${row.price}`);
+        res.end(`<div>${formatted_results.join('\n')}</div>`);
+    })
+});
+
 // endregion
 
 

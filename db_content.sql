@@ -1,6 +1,5 @@
 insert into directors values (default, 'foo', 'bar');
 
-
 insert into movies values 
     (default, 'Ed, Edd i Eddy',1,NULL,'2015-10-01',10,'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRVKvKdOgXSmyF4ex3LPZyvgJ76MNEcQWsZdiEU1i7bHntmLCCl','Serial opowiadający przygody trzech kumpli o dość podobnych imionach.'),
     (default, 'Ojciec Chrzestny',1,NULL,'2014-10-01',15,'https://fwcdn.pl/fpo/10/89/1089/7196615.3.jpg','Opowieść o nowojorskiej rodzinie mafijnej. Starzejący się Don Corleone pragnie przekazać władzę swojemu synowi.'),

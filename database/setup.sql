@@ -11,9 +11,9 @@ create table if not exists users (
     phone_number char(9),
     password text not null,
     city varchar(20) not null,
-    post_code char(5) not null,
+    post_code char(6) not null,
     street text not null,
-    house_number int not null,
+    house_number varchar(10) not null,
     local_number int not null
 );
 

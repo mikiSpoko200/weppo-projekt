@@ -7,6 +7,24 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" href="style.css"/>
+    <script>
+        window.addEventListener('load', function() {
+            let bt = document.getElementById('load_stored_products');
+
+            bt.addEventListener('click', function() {
+                let user_listing = document.getElementById('stored_products');
+
+                let req = new XMLHttpRequest();
+                req.open('post', '/cart/load_products', true);
+                req.onreadystatechange = function() {
+                    if ( req.readyState === XMLHttpRequest.DONE ) {
+                        user_listing.innerHTML = req.responseText;
+                    }
+                }
+                req.send();
+            });
+        });
+    </script>
 </head>
 <body>
 <div class="wrapper row1">
@@ -27,13 +45,24 @@
         </nav>
     </header>
 </div>
+
+
+
+
+
 <!-- content -->
 <div class="wrapper row2">
-    <%= for (var elem of products) { %>
-        <h> <%= elem%></h>
-    <% } %>
+    <button id="load_stored_products"> Load data </button>
+    <div id="stored_products">
+        <p> Press button above to load data </p>
+    </div>
 </div>
 <!-- Copyright -->
+
+
+
+
+
 <div class="wrapper row4">
     <footer id="copyright" class="clear">
         <p class="fl_left">Copyright &copy; 2018 - All Rights Reserved - <a href="#">Domain Name</a></p>

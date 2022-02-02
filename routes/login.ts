@@ -1,6 +1,7 @@
-import {Request, Response} from 'express';
+import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import pg from 'pg';
+import { Cart } from "./cart";
 
 
 // database connection
@@ -10,9 +11,6 @@ export const pool = new pg.Pool({
     user: 'postgres',
     password: 'password'
 });
-
-
-const ASSUME_HTTPS = false;
 
 
 // region Session data structures
@@ -25,18 +23,7 @@ interface ILogged {
     readonly surname: string;
 }
 
-// Model of a card
-export class Cart {
-    products: string[] = [];
 
-    add_item(product_id: string) {
-        this.products.push(product_id);
-    }
-
-    remove_item(product_id: string) {
-        this.products.filter(product => product != product_id);
-    }
-}
 
 // representation of user account.
 export class User implements ILogged {
@@ -78,10 +65,10 @@ export class Admin implements ILogged {
 async function user_login_data(email: string): Promise<User | null> {
     try {
         let query_result = await pool.query(
-            "select (id, name, surname, password) from users where email like '$1'", [email]
+            "select id, name, surname, password from users where email like $1", [email]
         );
         if (query_result.rows.length == 1) {
-            let user_data = query_result.rows[0];
+            let user_data: { id: string, name: string, surname: string, password: string} = query_result.rows[0];
             let cart = new Cart();
             return new User(user_data.id, user_data.name, user_data.surname, email, user_data.password, cart);
         } else {
@@ -93,6 +80,7 @@ async function user_login_data(email: string): Promise<User | null> {
     }
 }
 
+// TODO: przenies to do admin.ts
 /** Query database for admin login and password.
  * @param email {string} email associated with the account.
  */
@@ -120,12 +108,16 @@ export function get_handler(req: Request, res: Response) {
      *  FIXME: CREATE APPROPRIATE MODEL FOR THE VIEW.
      */
     if (req.session) {
-        console.log('Session data found');
-        res.render('login', {email: req.session.user!.email, password: req.session!.user!.password});
+        console.log('SOME session data found.');
+        if (req.session.user) {
+            res.render('login', {email: req.session.user!.email, password: req.session!.user!.password});
+        } else {
+            console.log('No USER session data found.');
+            res.render('login');
+        }
     } else {
-        console.log('No session data found.');
+        console.log('Default - no user session.');
     }
-    res.render('login', {email: req.session!.user!.email, password: req.session!.user!.password});
 }
 
 
@@ -139,7 +131,6 @@ class LoginForm {
     readonly password: string;
 }
 
-
 enum LoginStatus {
     UNRECOGNIZED_EMAIL,
     WRONG_PASSWORD,
@@ -147,20 +138,44 @@ enum LoginStatus {
 }
 
 
-export async function post_handler(req: Request<{}, {}, LoginForm>, res: Response) {
+/// Data structure that describes result of login attempt.
+class LoginViewParams {
+    constructor(message: string, status: string) {
+        this.message = message;
+        this.status = status;
+    }
+
+    message: string;
+    status: string;
+}
+
+
+type message_obj = { message: string, status: string };
+
+
+export async function async_post_handler(req: Request<{}, {}, LoginForm>): Promise<message_obj | null> {
     const user = await user_login_data(req.body.email);
     if (user === null) {
-        res.render('login', { message: 'Podany adres email nie jest zarejestrowany', status: 'error'});
-        return;
+        return { message: 'Podany adres email nie jest zarejestrowany', status: 'error' };
+    } else {
+        const is_received_correct = await bcrypt.compare(req.body.password, user.password);
+        if (is_received_correct) {
+            console.log("sesja założona.");
+            req.session.user = user;
+            return { message: "Logowanie zakończone skucesem", status: "success"};
+        } else {
+            return { message: "Niepoprawne hasło", status: "error" };
+        }
     }
+}
 
-    const is_received_correct = await bcrypt.compare(req.body.password, user.password);
 
-    if (is_received_correct) {
-        req.session.user = user;
-        res.render('login', { message: "Logowanie zakończone skucesem", state: "success"});
-        return;
-    }
-
-    res.render('login', { message: "Niepoprawne hasło", state: "error"});
+export function post_handler(req: Request<{}, {}, LoginForm>, res: Response) {
+    async_post_handler(req).then(message_obj => {
+        if (message_obj !== null) {
+            res.render('login', message_obj);
+        } else {
+            res.render('login');
+        }
+    })
 }

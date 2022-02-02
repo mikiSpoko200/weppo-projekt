@@ -30,7 +30,8 @@
 
 <!--
  *  Similarly to registration, logging can fail or succeed which is
- *  described in the state: string, and expressed  to user by message: string
+ *  described in the status: string, and expressed  to user by message: string
+ *  it can also receive the email and password values that are passed on get request if found in session.
 -->
 <!-- content -->
 <div class="wrapper row2">
@@ -38,12 +39,19 @@
         <div id="homepage">
             <form method="POST">
                 <div class="form-style-5">
-                    <form method="POST">
+                    <form id="" method="POST">
                         <fieldset>
                             <legend><span class="number">1</span> Candidate Info</legend>
-                            <input type="email" name="email" placeholder= <%= email ? email : "Email" %>>
-                            <input type="password" name="password" placeholder="Password" value= <%= if (password) { password.toString() } %>>
+                            <% if (locals.email) { %>
+                                <input type="email" name="email" value= <%= locals.email %>>
+                            <% } else { %>
+                                <input type="email" name="email" placeholder= "Adres email">
+                            <% } %>
+                                <input type="password" name="password" placeholder= "Hasło">
                         </fieldset>
+                        <% if ( locals.message && locals.status ) { %>
+                            <div class= <%= locals.status === "success" ? "message success" : "message error" %>> <%= locals.message  %></div>
+                        <% } %>
                         <input type="submit" value="Zaloguj"/>
                     </form>
                 </div>
