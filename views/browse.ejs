@@ -20,36 +20,89 @@
         <nav>
             <ul>
                 <li><a href="/">Strona główna</a></li>
-                <li><a href="login">Logowanie</a></li>
-                <li><a href="register">Rejestracja</a></li>
-                <li><a href="cart">Koszyk</a></li>
+                <li><a href="/browse">Przeglądaj</a></li>
+                <li><a href="/login">Logowanie</a></li>
+                <li><a href="/register">Rejestracja</a></li>
+                <li><a href="/cart">Koszyk</a></li>
+                <li><a href="/admin/login">Administracja</a></li>
             </ul>
         </nav>
     </header>
 </div>
-<!-- content -->
+
+
+
+
+
+<!--
+ *
+ * This model now receives the following data:
+ *
+ * type MovieData = {
+ *     id: number,
+ *     title: string,
+ *     director_name: string,
+ *     director_surname: string,
+ *     genres: string[],
+ *     tape_count: number
+ *     image: string,
+ *     price: number,
+ * };
+ *
+ -->
 <div class="wrapper row2">
-    <form action="/browse/" method="get" style="color:black;text-align:center;position:relative;bottom:-15px;">
-        <label for="search">Wyszukaj: </label>
-        <input id="search" type="text" name="search">
-        <input type="submit" value="Szukaj">
-    </form>
+    <div class="form-style-5">
+        <form action="/browse/" method="get" style="color:black;text-align:center;position:relative;bottom:-15px;">
+            <label for="search">Wyszukaj: </label>
+            <input id="title" type="text" name="title" placeholder="Tytuł" value="">
+            <select name="genre">
+                <option value="">Brak</option>
+                <option value="horror">horror</option>
+                <option value="akcja">akcja</option>
+                <option value="przygodowy">przygodowy</option>
+                <option value="komedia romantyczna">komedia romantyczna</option>
+                <option value="animowany">animowany</option>
+                <option value="fantazy">fantazy</option>
+                <option value="historyczny">historyczny</option>
+                <option value="science fiction">science fiction</option>
+                <option value="thriller">thriller</option>
+                <option value="western">western</option>
+                <option value="przesmiewczy">prześmiewczy</option>
+                <option value="cyberpunk">cyberpunk</option>
+                <option value="gangsterski">gangsterski</option>
+                <option value="indie">indie</option>
+            </select>
+            <input type="submit" value="Szukaj">
+        </form>
+    </div>
     <div id="container" style="display: flex;">
         <section>
-            <% for (var i = 0; i < query_results.length; i++) { %>
+            <% for (var i = 0; i < movie_data.length; i++) { %>
                 <% if (i % 3 === 2) { %>
                 <article class="one_third lastbox">
                     <% } else { %>
                     <article class="one_third">
                         <% } %>
                         <figure>
-                            <img src="<%= query_results[i][2] %>" style="width: 300px; height: 300px;">
-                            <figcaption> <%= query_results[i][0] %></figcaption>
-                            <br>
-                            <figcaption> <%= query_results[i][1] %></figcaption>
+                            <img src="<%= movie_data[i].image %>" style="width: 300px; height: 300px;">
+                            <figcaption>
+                                <p> tytuł: <%= movie_data[i].title %></p><br>
+                                <p> opis: <%= movie_data[i].description %></p><br>
+                                <p> dostępne: <%= movie_data[i].tape_count %> sztuk</p><br>
+                                <p> cena: <%= movie_data[i].price %></p><br>
+                                <p> reżyser: <%= movie_data[i].director_name %> <%= movie_data[i].director_surname %></p><br>
+                                <p> gatunki: </p>
+                                <% for (let genre of movie_data[i].genres) { %>
+                                    <p> - <%= genre %></p>
+                                <% } %>
+                                <br>
+                                <p> opis: <%= movie_data[i].description %></p><br>
+                            </figcaption>
+                            <footer class="more"><a href="/TODO: fill me!">Dodaj do koszyka</a></footer>
                         </figure>
                     </article>
                     <% if (i % 3 === 2) { %>
+                </article>
         </section>
     </div>
     <div id="container" style="display: flex;">
@@ -59,6 +112,11 @@
         </section>
     </div>
 </div>
+
+
+
+
+
 <!-- Copyright -->
 <div class="wrapper row4">
     <footer id="copyright" class="clear">

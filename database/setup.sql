@@ -17,8 +17,7 @@ create table if not exists users (
     local_number int not null
 );
 
---     'horror', 'akcja', 'przygodowy', 'komedia romantyczna', 'animowany', 'fantazy', 'historyczny',
---     'science fiction','thriller', 'western', 'prześmiewczy', 'cyberpunk', 'gangsterski', 'indie'
+
 
 create table if not exists genres (
     id serial primary key,
@@ -52,15 +51,6 @@ create table if not exists movies_genres (
 );
 
 
-create table if not exists orders (
-    id serial primary key,
-    is_active bool not null,
-    user_id integer not null references users (id),
-    creation_date timestamp default now() not null,
-    total decimal not null
-);
-
-
 create table if not exists tapes (
     id serial primary key,
     movie_id integer not null references movies (id)
@@ -73,4 +63,14 @@ create table if not exists admins (
     surname varchar(40) not null,
     email text not null unique,
     password text not null
+);
+
+
+
+create table if not exists orders (
+    id serial primary key,
+    is_active bool not null,
+    user_id integer not null references users (id),
+    creation_date timestamp default now() not null,
+    total decimal not null
 );

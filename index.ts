@@ -1,16 +1,31 @@
+
+// npm imports
 import * as express from 'express';
 import { Request, Response } from 'express';
 import session from 'express-session';
-import * as login from './routes/login';
-import { get_items } from './routes/browse';
-import * as register from './routes/register';
 import * as multer from 'multer';
 import pg from "pg";
+
+// internal imports.
+import { get_items } from './routes/browse';
+import * as login from './routes/login';
+import * as register from './routes/register';
+import * as admin_login from './routes/admin/login';
+import * as session_data from './session';
+import * as browse from './routes/browse';
 
 
 const upload = multer.default();
 const app = express.default();
 const SIGNATURE = '64655bbc4bc11794cc67c300beaba73ab4ea957e6e2b3d1430bce3480fdf3dc997a1f174abe8fa4ce5986588e2013c6d5ae046937557e12e491783f1343e7d5c';
+
+// database connection
+export const pool = new pg.Pool({
+    host: 'localhost',
+    database: 'shop',
+    user: 'postgres',
+    password: 'password'
+});
 
 // default app configuration.
 const enum AppConfig {
@@ -34,8 +49,8 @@ app.use(express.static('public'));
 
 declare module 'express-session' {
     interface SessionData {
-        user?: login.User;
-        admin?: login.Admin;
+        user: session_data.User | null
+        admin: session_data.Admin | null
     }
 }
 
@@ -43,18 +58,8 @@ declare module 'express-session' {
  * TODO: 28.01.2020:
  *  =--------------- EJS i baza
  *  3. Wybieranie produktu podczas przeglądania.
- *  =-------------- Bezpieczne hasła
- *  6. logowanie zarówno użytkownik jak i admin
- *  7. rejestrowanie zarówno użytkownik, admina rejestrujemy my albo coś.
- */
-
-/*
-* TODO:
 *  - koszyk
 *  - wybieranie produktu
-*  - autentykacja użytkownika
-*  - podział na obsługę żądań POST/GET w routingu
-*  - bazka - uwaga hasła musza być hashowane przed dodaniem (patrz wykład 10)
 * */
 
 
@@ -68,33 +73,32 @@ app.get('/', (req: Request, res: Response) => {
 // endregion
 
 
-// region routing: /browse/
-app.get('/browse', (req: Request, res: Response) => {
-    get_items(req.query.search).then(items => {
-        res.render('browse', {query_results: items});
-    })
-});
+// (req: Request, res: Response) => {
+//     get_items(req.query.search).then(items => {
+//         res.render('browse', {query_results: items});
+//     })
+// }
+// (req: Request, res: Response) => {
+//     console.log('produkt został dodany.');
+// }
+
+// region routing: /browse
+app.get('/browse', browse.get_handler);
+
+app.get('/browse', browse.post_handler);
 // endregion
 
 
-// region routing: /login/
+// region routing: /login
 app.get('/login', login.get_handler);
 
 app.post('/login', login.post_handler);
 // endregion
 
 
-// region routing: /cart/
+// region routing: /cart
 app.get('/cart', (req: Request, res: Response) => {
     res.render('cart', req.session?.user?.cart.product_ids);
-});
-
-// database connection
-export const pool = new pg.Pool({
-    host: 'localhost',
-    database: 'shop',
-    user: 'postgres',
-    password: 'password'
 });
 
 app.post('/cart/load_products', upload.any(), (req, res) => {
@@ -103,11 +107,10 @@ app.post('/cart/load_products', upload.any(), (req, res) => {
         res.end(`<div>${formatted_results.join('\n')}</div>`);
     })
 });
-
 // endregion
 
 
-// region routing: /register/
+// region routing: /register
 app.get('/register', register.get_handler);
 
 
@@ -115,10 +118,17 @@ app.post('/register', register.post_handler);
 // endregion
 
 
-// region routing: /product/
+// region routing: /product
 app.use('/product', (req: Request, res: Response) => {
     res.render('product', {product_id: 1234321});
 });
+// endregion
+
+
+// region /admin/login
+app.get('/admin/login', admin_login.get_handler);
+
+app.post('/admin/login', admin_login.post_handler);
 // endregion
 
 
