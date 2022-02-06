@@ -27,11 +27,13 @@ export class Cart {
 export async function async_get_hanlder(req: Request, res: Response) {
     if (req.session.user) {
         let picked_products: any[] = [];
-        for (let product of req.session.user.cart.product_ids) {
-             const product_data = await pool.query('select ');
-             picked_products.push(product_data);
+        for (let product_id of req.session.user.cart.product_ids) {
+             const product_data = await pool.query(
+                 'select movies.* from movies join tapes t on movies.id = t.movie_id where t.id = $1',
+                 [product_id]
+             );
         }
-        res.render('cart', {  })
+        res.render('cart', { picked_products })
     } else {
         res.render('cart', {message: 'Musisz być zalogowanym, żeby móc używać koszyka', status: 'info'});
     }

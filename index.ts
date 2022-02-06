@@ -101,11 +101,21 @@ app.get('/cart', (req: Request, res: Response) => {
     res.render('cart', req.session?.user?.cart.product_ids);
 });
 
-app.post('/cart/load_products', upload.any(), (req, res) => {
-    pool.query('select * from movies').then(result => {
-        let formatted_results = result.rows.map(row => `${row.title}, ${row.price}`);
+async function TEMP_LOAD_PROD(req: Request, res: Response) {
+    // @ts-ignore
+    await Promise.all(req.session!.user.cart.product_ids.forEach(async product_id => {
+        let selected_movies = await pool.query(
+            'select movies.* from movies join tapes t on movies.id = t.movie_id where t.id = $1',
+            [product_id]
+        );
+        let formatted_results = selected_movies.rows.map(row => `${row.title}, ${row.price}`);
         res.end(`<div>${formatted_results.join('\n')}</div>`);
-    })
+    }));
+}
+
+
+app.post('/cart/load_products', upload.any(), (req, res) => {
+    TEMP_LOAD_PROD
 });
 // endregion
 

@@ -9,20 +9,23 @@
     <link rel="stylesheet" href="style.css"/>
     <script>
         window.addEventListener('load', function() {
-            let bt = document.getElementById('load_stored_products');
+            const button_ids = <%= locals.product_ids %>;
+            for (let button_id of button_ids) {
+                let bt = document.getElementById(`button_${button_id}`);
 
-            bt.addEventListener('click', function() {
-                let user_listing = document.getElementById('stored_products');
+                bt.addEventListener('click', function() {
+                    let status_section = document.getElementById(`status_${button_id}`);
 
-                let req = new XMLHttpRequest();
-                req.open('post', '/cart/load_products', true);
-                req.onreadystatechange = function() {
-                    if ( req.readyState === XMLHttpRequest.DONE ) {
-                        user_listing.innerHTML = req.responseText;
+                    let req = new XMLHttpRequest();
+                    req.open('post', '/cart/load_products', true);
+                    req.onreadystatechange = function() {
+                        if ( req.readyState === XMLHttpRequest.DONE ) {
+                            status_section.innerHTML = req.responseText;
+                        }
                     }
-                }
-                req.send();
-            });
+                    req.send();
+                });
+            }
         });
     </script>
 </head>
@@ -55,9 +58,9 @@
 <!-- content -->
 <div class="wrapper row2">
     <button id="load_stored_products"> Load data </button>
-    <div id="stored_products">
-        <p> Press button above to load data </p>
-    </div>
+    <% for (let button_id of locals.buttons_ids) { %>
+        <div id= <%= `{}`%>
+    <% } %>
 </div>
 <!-- Copyright -->
 

@@ -7,6 +7,27 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" href="/style.css"/>
+    <script>
+        window.addEventListener('load', function() {
+            const button_ids = <%= locals.product_ids %>;
+            for (let button_id of button_ids) {
+                let bt = document.getElementById(`button_${button_id}`);
+
+                bt.addEventListener('click', function() {
+                    let status_section = document.getElementById(`status_${button_id}`);
+
+                    let req = new XMLHttpRequest();
+                    req.open('post', '/cart/load_products', true);
+                    req.onreadystatechange = function() {
+                        if ( req.readyState === XMLHttpRequest.DONE ) {
+                            status_section.innerHTML = req.responseText;
+                        }
+                    }
+                    req.send();
+                });
+            }
+        });
+    </script>
 </head>
 <body>
 <div class="wrapper row1">
@@ -98,7 +119,13 @@
                                 <br>
                                 <p> opis: <%= movie_data[i].description %></p><br>
                             </figcaption>
-                            <footer class="more"><a href="/TODO: fill me!">Dodaj do koszyka</a></footer>
+                            <footer class="more">
+                                <button id=<%=`button_${movie_data[i].id}` %>>Dodaj do koszyka</button>
+                            </footer>
+
+                            <div id= <%=`status_${movie_data[i].id}` %>>
+
+                            </div>
                         </figure>
                     </article>
                     <% if (i % 3 === 2) { %>
